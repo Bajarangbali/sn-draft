@@ -11,6 +11,7 @@
 */
 import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./pages/Home";
+import AddPayment from "./pages/AddPayment";
 import Tables from "./pages/Tables";
 import Billing from "./pages/Billing";
 import Rtl from "./pages/Rtl";
@@ -30,6 +31,7 @@ function App() {
         <Route path="/sign-in" exact component={SignIn} />
         <Main>
           <Route exact path="/dashboard" component={Home} />
+          <Route exact path="/addPayment" component={AddPayment} />
           <Route exact path="/tables" component={Tables} />
           <Route exact path="/billing" component={Billing} />
           <Route exact path="/rtl" component={Rtl} />
