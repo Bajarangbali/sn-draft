@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Select } from 'antd';
+import { Select, DatePicker } from 'antd';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -14,9 +15,13 @@ const AddPayment = () => {
     relationHindi: '',
     fatherNameHindi: '',
     bankAccount: 'ABRSVS(SHIKSHA NIDHI)-9078(SBI)', // Example default value
+    amount: '',
+    transactionDetails: '',
+    transactionDate: null,
+    modeOfPayment: '',
   });
 
-// Options for bank accounts
+  // Options for bank accounts
   const accountOptions = [
     { value: 'ABRSVS(SHIKSHA NIDHI)-9078(SBI)', label: 'ABRSVS(SHIKSHA NIDHI)-9078(SBI)' },
     { value: 'ABRSVS(M_GAUSHALA)-4937(SBI)', label: 'ABRSVS(M_GAUSHALA)-4937(SBI)' },
@@ -36,12 +41,22 @@ const AddPayment = () => {
     setPaymentDetails({ ...paymentDetails, [id]: value });
   };
 
+  const handleDateChange = (date) => {
+    setPaymentDetails({ ...paymentDetails, transactionDate: date });
+  };
+
+  const handleSelectChange = (value) => {
+    setPaymentDetails({ ...paymentDetails, modeOfPayment: value });
+  };
+
   // Function to handle payment addition
   const handleAddPayment = () => {
     // Implement your logic to add payment (e.g., API call, state update)
     console.log('Payment Details:', paymentDetails);
     // Reset form state or perform any necessary actions after adding payment
   };
+
+  const paymentModes = ['UPI', 'NEFT', 'RTGS', 'Cash', 'Cheque'];
 
   return (
     <div className="ant-card criclebox tablespace mb-24">
@@ -172,7 +187,7 @@ const AddPayment = () => {
             </div>
           </div>
 
-            {/* Add User Detail Section */}
+          {/* Add Payment Detail Section */}
           <div className="ant-col ant-col-xs-24">
             <h5 className="ant-typography" style={{ display: 'inline-block', marginRight: '8px' }}>
               Add New Payment Detail
@@ -180,21 +195,90 @@ const AddPayment = () => {
           </div>
 
           {/* Bank Account Field */}
-          <div className="ant-form-item bank_account">
-            <label htmlFor="bankAccount" className="ant-form-item-required" title="Bank Account">
-              Bank Account
-            </label>
-            <Select
-              placeholder="Select bank account"
-              value={paymentDetails.bankAccount}
-              onChange={handleAccountSelect}
-            >
-              {accountOptions.map((option) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
+          <div className="ant-col ant-col-xs-24 ant-col-sm-24 ant-col-lg-12">
+            <div className="ant-form-item">
+              <label htmlFor="bankAccount" className="ant-form-item-required" title="Bank Account">
+                Bank Account
+              </label>
+              <Select
+                placeholder="Select bank account"
+                value={paymentDetails.bankAccount}
+                onChange={handleAccountSelect}
+              >
+                {accountOptions.map((option) => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </div>
+
+          {/* Payment Details Fields */}
+          <div className="ant-col ant-col-xs-24 ant-col-sm-24">
+            <div className="ant-row" gutter={16}>
+              <div className="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-lg-6">
+                <div className="ant-form-item">
+                  <label htmlFor="amount" className="ant-form-item-required" title="Amount">
+                    Amount (Rs)
+                  </label>
+                  <input
+                    placeholder="Enter amount"
+                    id="amount"
+                    className="ant-input"
+                    type="text"
+                    value={paymentDetails.amount}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-lg-6">
+                <div className="ant-form-item">
+                  <label htmlFor="transactionDetails" className="ant-form-item-required" title="Transaction Details">
+                    Transaction Details (UTR, UPI, etc.)
+                  </label>
+                  <input
+                    placeholder="Enter transaction details"
+                    id="transactionDetails"
+                    className="ant-input"
+                    type="text"
+                    value={paymentDetails.transactionDetails}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-lg-6">
+                <div className="ant-form-item">
+                  <label htmlFor="transactionDate" className="ant-form-item-required" title="Transaction Date">
+                    Transaction Date
+                  </label>
+                  <DatePicker
+                    id="transactionDate"
+                    className="ant-datepicker"
+                    value={paymentDetails.transactionDate ? moment(paymentDetails.transactionDate) : null}
+                    onChange={handleDateChange}
+                  />
+                </div>
+              </div>
+              <div className="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-lg-6">
+                <div className="ant-form-item">
+                  <label htmlFor="modeOfPayment" className="ant-form-item-required" title="Mode of Payment">
+                    Mode of Payment
+                  </label>
+                  <Select
+                    placeholder="Select mode of payment"
+                    value={paymentDetails.modeOfPayment}
+                    onChange={handleSelectChange}
+                  >
+                    {paymentModes.map((mode) => (
+                      <Option key={mode} value={mode}>
+                        {mode}
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
